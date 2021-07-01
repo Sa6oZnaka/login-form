@@ -6,7 +6,7 @@
 2. Edit databaseConfig.js located in the root folder to your MySQL credentials
 
 3. Install the dependencies 
-  `npm intall`
+  `npm install`
 
 4. Start the app 
   `npm start`
