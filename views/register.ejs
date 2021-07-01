@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+<form method="post" action="/register">
+    <div class="box">
+
+        <h1>Register</h1>
+        <% if(message.length > 0) { %>
+            <div class="alert_message"><%= message %></div>
+        <% } %>
+        Username <input type="username" name="username" value=""  class="username" /><br>
+
+        Password <input type="password" name="password" value="" class="password" /><br>
+
+        <a href="#"><button type="submit" id="btn2">Sign Up</button></a>
+
+    </div>
+
+</form>
+
+<p>Already have an account? <u style="color:#f1c40f;"> <a href="./login"> Click Here! </a></u></p>
+
+</body>
+</html>
