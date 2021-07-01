@@ -33,9 +33,12 @@ module.exports = function (passport, connection) {
                                 password: bcrypt.hashSync(password, null, null)
                             };
 
-                            let insertQuery = "INSERT INTO user (username, password) values (?, ?)";
 
-                            connection.query(insertQuery, [newUserMysql.username, newUserMysql.password],
+                            let verification_token = generateToken(10);
+
+                            let insertQuery = "INSERT INTO user (username, password, token, verified) values (?, ?, ?, ?)";
+
+                            connection.query(insertQuery, [newUserMysql.username, newUserMysql.password, verification_token, false],
                                 function (err, rows) {
                                     if(err)
                                     console.log(err);
@@ -44,7 +47,9 @@ module.exports = function (passport, connection) {
 
                                     return done(null, newUserMysql);
                                 });
-                        }
+                            }
+                            // send verification token mail
+
                     });
             })
     );
@@ -73,3 +78,14 @@ module.exports = function (passport, connection) {
             })
     );
 };
+
+function generateToken(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}

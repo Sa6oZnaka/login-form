@@ -1,4 +1,4 @@
-module.exports = function (app, passport) {
+module.exports = function (app, passport, connection) {
 
     app.get('/login', function (req, res) {
         res.render('login.ejs', {
@@ -35,6 +35,42 @@ module.exports = function (app, passport) {
         failureRedirect: '/register',
         failureFlash: true
     }));
+
+    app.get('/verify/:token', function (req, res) {
+        let token = req.params.token;
+
+        let sql =
+            `select * from user where token = ?;`;
+
+        connection.query(sql, [token], function (error, result) {
+            if (error) return console.error("\x1b[33m" + error.message + "\x1b[0m");
+            console.log(result);
+
+            if(result.length > 0){
+                let userID = result[0].id;
+                console.log("ID " + userID);
+
+                let sql =
+                `update user SET verified = 1 WHERE id =?;`;
+                connection.query(sql, [userID], function (error, result) {
+                    if (error) return console.error("\x1b[33m" + error.message + "\x1b[0m");
+                    console.log(result);
+
+                    res.render('login.ejs', null);
+                });
+
+
+            }else{
+                console.log("Invalid token!");
+                res.render('login.ejs', null);
+            }
+    
+        });
+
+        console.log(token);
+    });
+
+
 
     app.get('/', isLoggedIn, function (req, res) {
         res.render('index.ejs', null);
